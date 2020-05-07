@@ -1,8 +1,13 @@
 package artur.sanko;
 
+import artur.sanko.menu.MainMenu;
+
 import java.io.Console;
-import java.util.HashMap;
-import java.util.Map;
+
+import static artur.sanko.menu.MainMenu.ASTRO;
+import static artur.sanko.menu.MainMenu.EXIT;
+import static artur.sanko.menu.MainMenu.STAT;
+import static artur.sanko.menu.MainMenu.WEATHER;
 
 public class ConsoleServices {
 
@@ -10,26 +15,29 @@ public class ConsoleServices {
 
         Console console = getConsonle();
 
-        console.writer().print(buildMainMenu());
+        MainMenu mainMenu = new MainMenu();
+        console.writer().print(mainMenu.buildMenu());
 
         String menuItemKey = console.readLine("\n>>> ");
         while (true) {
 
-            if (KEY_4.equals(menuItemKey)) {
+            if (EXIT.equals(menuItemKey)) {
                 break;
             }
+
+            String menuItemDescription = mainMenu.getDescription(menuItemKey);
             switch (menuItemKey) {
 
-                case KEY_1:
-                    console.writer().print(mainMenu.get(KEY_1));
+                case ASTRO:
+                    console.writer().print(menuItemDescription);
                     break;
 
-                case KEY_2:
-                    console.writer().print(mainMenu.get(KEY_2));
+                case WEATHER:
+                    console.writer().print(menuItemDescription);
                     break;
 
-                case KEY_3:
-                    console.writer().print(mainMenu.get(KEY_3));
+                case STAT:
+                    console.writer().print(menuItemDescription);
                     break;
 
                 default:
@@ -49,27 +57,5 @@ public class ConsoleServices {
         }
 
         return console;
-    }
-
-    private static String buildMainMenu() {
-
-        StringBuilder builder = new StringBuilder();
-        builder.append("Главное меню:\n");
-        mainMenu.forEach((key, description) -> builder.append(description + " (" + key + ")\n"));
-
-        return builder.toString();
-    }
-
-    private static final String KEY_1 = "1";
-    private static final String KEY_2 = "2";
-    private static final String KEY_3 = "3";
-    private static final String KEY_4 = "4";
-    private static Map<String, String> mainMenu = new HashMap();
-
-    static {
-        mainMenu.put(KEY_1, "Астрологический прогноз");
-        mainMenu.put(KEY_2, "Прогноз погоды");
-        mainMenu.put(KEY_3, "Статистика");
-        mainMenu.put(KEY_4, "Выход");
     }
 }
