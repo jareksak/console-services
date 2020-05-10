@@ -1,50 +1,52 @@
 package artur.sanko;
 
-import artur.sanko.menu.MainMenu;
+import artur.sanko.enumeration.MainMenuItem;
+import artur.sanko.enumeration.PredictionPeriod;
+import artur.sanko.service.AstroService;
+import artur.sanko.service.UserInputService;
 
 import java.io.Console;
+import java.time.LocalDate;
 
-import static artur.sanko.menu.MainMenu.ASTRO;
-import static artur.sanko.menu.MainMenu.EXIT;
-import static artur.sanko.menu.MainMenu.STAT;
-import static artur.sanko.menu.MainMenu.WEATHER;
+import static artur.sanko.enumeration.MainMenuItem.EXIT;
 
 public class ConsoleServices {
+
+    private static UserInputService inputService = UserInputService.getInstance();
+    private static AstroService astroService = AstroService.getInstance();
 
     public static void main(String[] args) {
 
         Console console = getConsonle();
+        console.writer().print(MainMenuItem.buildMenu());
 
-        MainMenu mainMenu = new MainMenu();
-        console.writer().print(mainMenu.buildMenu());
-
-        String menuItemKey = console.readLine("\n>>> ");
         while (true) {
 
-            if (EXIT.equals(menuItemKey)) {
+            MainMenuItem mainMenuItem = inputService.readMainMenuItem(console, "\n>>> ");
+            if (EXIT.equals(mainMenuItem)) {
                 break;
             }
 
-            String menuItemDescription = mainMenu.getDescription(menuItemKey);
-            switch (menuItemKey) {
+            switch (mainMenuItem) {
 
                 case ASTRO:
-                    console.writer().print(menuItemDescription);
+
+                    LocalDate birthDate = inputService.readDate(console, "Дата рождения");
+                    LocalDate startDate = inputService.readDate(console, "Дата предсказания");
+                    PredictionPeriod predictionPeriod = inputService.readPredictionPeriod(console, "Период");
+                    console.writer().print(astroService.getPrediction(birthDate, startDate, predictionPeriod));
                     break;
 
                 case WEATHER:
-                    console.writer().print(menuItemDescription);
+                    console.writer().print(mainMenuItem.getDescription());
                     break;
 
                 case STAT:
-                    console.writer().print(menuItemDescription);
+                    console.writer().print(mainMenuItem.getDescription());
                     break;
 
                 default:
-                    console.printf("Неизвестный ключ '%s'\n", menuItemKey);
             }
-
-            menuItemKey = console.readLine("\n>>> ");
         }
     }
 
