@@ -28,12 +28,18 @@ public class UserInputService {
         return userInputService;
     }
 
+    public Optional<LocalDate> readOptionalDate(Console console, String description) {
+
+        String dateStr = console.readLine("%s, (%s): ", description, DATE_PATTERN);
+
+        return dateStr.isEmpty() ? Optional.empty() : toLocalDate(dateStr);
+    }
+
     public LocalDate readDate(Console console, String description) {
 
         while (true) {
 
-            String dateStr = console.readLine("%s, (%s): ", description, DATE_PATTERN);
-            Optional<LocalDate> localDateOpt = toLocalDate(dateStr);
+            Optional<LocalDate> localDateOpt = readOptionalDate(console, description);
             if (localDateOpt.isPresent()) {
 
                 return localDateOpt.get();
@@ -56,12 +62,18 @@ public class UserInputService {
         return Optional.ofNullable(localDate);
     }
 
+    public Optional<PredictionPeriod> readOptionalPredictionPeriod(Console console, String description) {
+
+        String periodStr = console.readLine("%s, (%s): ", description, PredictionPeriod.getNames());
+
+        return toPredictionPeriod(periodStr);
+    }
+
     public PredictionPeriod readPredictionPeriod(Console console, String description) {
 
         while (true) {
 
-            String periodStr = console.readLine("%s, (%s): ", description, PredictionPeriod.getNames());
-            Optional<PredictionPeriod> predictionPeriodOpt = toPredictionPeriod(periodStr);
+            Optional<PredictionPeriod> predictionPeriodOpt = readOptionalPredictionPeriod(console, description);
             if (predictionPeriodOpt.isPresent()) {
 
                 return predictionPeriodOpt.get();
@@ -72,13 +84,15 @@ public class UserInputService {
     public Optional<PredictionPeriod> toPredictionPeriod(String periodStr) {
 
         PredictionPeriod predictionPeriod = null;
-        try {
+        if (!periodStr.isEmpty()) {
+            try {
 
-            predictionPeriod = PredictionPeriod.valueOf(periodStr);
+                predictionPeriod = PredictionPeriod.valueOf(periodStr);
 
-        } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
 
-            System.out.println(String.format("Неизвестный период: '%s", periodStr));
+                System.out.println(String.format("Неизвестный период: '%s'", periodStr));
+            }
         }
 
         return Optional.ofNullable(predictionPeriod);
@@ -106,7 +120,7 @@ public class UserInputService {
 
         } catch (IllegalArgumentException e) {
 
-            System.out.println(String.format("Heизвестый элемент меню: '%s", menuItemStr));
+            System.out.println(String.format("Heизвестый элемент меню: '%s'", menuItemStr));
         }
 
         return Optional.ofNullable(mainMenuItem);

@@ -11,7 +11,7 @@ public enum MainMenuItem {
 
     private String description;
 
-    private MainMenuItem(String description) {
+    MainMenuItem(String description) {
 
         this.description = description;
     }
