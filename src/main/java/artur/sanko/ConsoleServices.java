@@ -7,11 +7,11 @@ import artur.sanko.service.BillingService;
 import artur.sanko.service.UserInputService;
 import artur.sanko.service.WeatherService;
 
-import java.io.Console;
 import java.time.LocalDate;
 import java.util.Optional;
 
 import static artur.sanko.enumeration.MainMenuItem.EXIT;
+import static artur.sanko.enumeration.MainMenuItem.buildMenu;
 
 public class ConsoleServices {
 
@@ -22,12 +22,10 @@ public class ConsoleServices {
 
     public static void main(String[] args) {
 
-        Console console = getConsonle();
-        console.writer().print(MainMenuItem.buildMenu());
-
+        System.out.print(buildMenu());
         while (true) {
 
-            MainMenuItem mainMenuItem = inputService.readMainMenuItem(console, "\n>>> ");
+            MainMenuItem mainMenuItem = inputService.readMainMenuItem("\n>>> ");
             if (EXIT.equals(mainMenuItem)) {
                 break;
             }
@@ -36,37 +34,26 @@ public class ConsoleServices {
 
                 case ASTRO:
                     billingService.addBill(MainMenuItem.ASTRO.name());
-                    LocalDate birthDate = inputService.readDate(console, "Дата рождения");
-                    LocalDate startDate = inputService.readDate(console, "Дата предсказания");
-                    PredictionPeriod predictionPeriod = inputService.readPredictionPeriod(console, "Период");
-                    console.writer().print(astroService.getPrediction(birthDate, startDate, predictionPeriod));
+                    LocalDate birthDate = inputService.readDate("Дата рождения");
+                    LocalDate startDate = inputService.readDate("Дата предсказания");
+                    PredictionPeriod predictionPeriod = inputService.readPredictionPeriod("Период");
+                    System.out.print(astroService.getPrediction(birthDate, startDate, predictionPeriod));
                     break;
 
                 case WEATHER:
                     billingService.addBill(MainMenuItem.WEATHER.name());
-                    Optional<LocalDate> predictionDateOpt = inputService.readOptionalDate(console, "Прогноз на дату");
-                    Optional<PredictionPeriod> predictionPeriodOpt = inputService.readOptionalPredictionPeriod(console,
+                    Optional<LocalDate> predictionDateOpt = inputService.readOptionalDate("Прогноз на дату");
+                    Optional<PredictionPeriod> predictionPeriodOpt = inputService.readOptionalPredictionPeriod(
                             "Прогноз на период");
-                    console.writer().print(weatherService.getPrediction(predictionDateOpt, predictionPeriodOpt));
+                    System.out.print(weatherService.getPrediction(predictionDateOpt, predictionPeriodOpt));
                     break;
 
                 case STAT:
-                    console.writer().print(billingService.buildBillingStatistic());
+                    System.out.print(billingService.buildBillingStatistic());
                     break;
 
                 default:
             }
         }
-    }
-
-    private static Console getConsonle() {
-
-        Console console = System.console();
-        if (console == null) {
-
-            throw new IllegalStateException("Программа запущена не из консоли.");
-        }
-
-        return console;
     }
 }
