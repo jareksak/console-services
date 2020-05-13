@@ -4,5 +4,5 @@ import java.util.Set;
 
 public interface WeatherPredictionLoader {
 
-    Set<String> load();
+    Set<String> load(String path);
 }

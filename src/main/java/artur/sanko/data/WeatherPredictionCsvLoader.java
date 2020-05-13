@@ -10,7 +10,9 @@ import java.util.Set;
 public class WeatherPredictionCsvLoader implements WeatherPredictionLoader {
 
     private static final String DELIMITER = ";";
-    private static final String FILE = "weather.csv";
+    public static final String WEATHER_CSV = "weather.csv";
+
+    private Set<String> predictions = new LinkedHashSet<>();
 
     private static WeatherPredictionCsvLoader weatherPredictionCsvLoader;
 
@@ -27,18 +29,15 @@ public class WeatherPredictionCsvLoader implements WeatherPredictionLoader {
         return weatherPredictionCsvLoader;
     }
 
-    // сохраняет порядок добавления и содержит только уникальные значения
-    private Set<String> predictions = new LinkedHashSet<>();
-
     @Override
-    public Set<String> load() {
+    public Set<String> load(String path) {
 
         if (!predictions.isEmpty()) {
 
             return predictions;
         }
 
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(FILE);
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
             String line;
@@ -53,15 +52,9 @@ public class WeatherPredictionCsvLoader implements WeatherPredictionLoader {
 
         } catch (IOException e) {
 
-            System.out.println(String.format("Ошибка чтения файла '%s': %s ", FILE, e.getMessage()));
+            System.out.println(String.format("Ошибка чтения файла '%s': %s ", path, e.getMessage()));
         }
 
         return predictions;
-    }
-
-    public static void main(String[] args) {
-
-        WeatherPredictionLoader loader = new WeatherPredictionCsvLoader();
-        loader.load();
     }
 }

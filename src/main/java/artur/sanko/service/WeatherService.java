@@ -1,20 +1,25 @@
 package artur.sanko.service;
 
 import artur.sanko.data.WeatherPredictionCsvLoader;
+import artur.sanko.data.WeatherPredictionJsonLoader;
 import artur.sanko.data.WeatherPredictionLoader;
 import artur.sanko.enumeration.PredictionPeriod;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import static artur.sanko.data.WeatherPredictionCsvLoader.WEATHER_CSV;
+import static artur.sanko.data.WeatherPredictionJsonLoader.WEATHER_JSON;
 import static artur.sanko.helper.CollectionsHelper.getRandomElement;
 
 public class WeatherService {
 
     private WeatherPredictionLoader csvLoader = WeatherPredictionCsvLoader.getInstance();
+    private WeatherPredictionJsonLoader jsonLoader = WeatherPredictionJsonLoader.getInstance();
     private Map<LocalDate, String> predictionsMap = new HashMap<>();
 
     private static WeatherService weatherService;
@@ -34,7 +39,9 @@ public class WeatherService {
 
     public String getPrediction(LocalDate date) {
 
-        Set<String> predictions = csvLoader.load();
+        Set<String> predictions = new LinkedHashSet<>();
+        predictions.addAll(csvLoader.load(WEATHER_CSV));
+        predictions.addAll(jsonLoader.load(WEATHER_JSON));
         String randomPrediction = getRandomElement(predictions).orElse("");
         predictionsMap.putIfAbsent(date, String.format("%s: %s\n", date.toString(), randomPrediction));
 
