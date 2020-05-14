@@ -35,17 +35,17 @@ public class ConsoleServices {
                 case ASTRO:
                     billingService.addBill(MainMenuItem.ASTRO.name());
                     LocalDate birthDate = inputService.readDate("Дата рождения");
-                    LocalDate startDate = inputService.readDate("Дата предсказания");
-                    PredictionPeriod predictionPeriod = inputService.readPredictionPeriod("Период");
-                    System.out.print(astroService.getPrediction(birthDate, startDate, predictionPeriod));
+                    Optional<LocalDate> astroDateOpt = inputService.readOptionalDate("Дата предсказания");
+                    Optional<PredictionPeriod> astroPeriodOpt = inputService.readOptionalPredictionPeriod("Период");
+                    System.out.print(astroService.getPrediction(birthDate, astroDateOpt, astroPeriodOpt));
                     break;
 
                 case WEATHER:
                     billingService.addBill(MainMenuItem.WEATHER.name());
-                    Optional<LocalDate> predictionDateOpt = inputService.readOptionalDate("Прогноз на дату");
-                    Optional<PredictionPeriod> predictionPeriodOpt = inputService.readOptionalPredictionPeriod(
+                    Optional<LocalDate> weatherDateOpt = inputService.readOptionalDate("Прогноз на дату");
+                    Optional<PredictionPeriod> weatherPeriodOpt = inputService.readOptionalPredictionPeriod(
                             "Прогноз на период");
-                    System.out.print(weatherService.getPrediction(predictionDateOpt, predictionPeriodOpt));
+                    System.out.print(weatherService.getPrediction(weatherDateOpt, weatherPeriodOpt));
                     break;
 
                 case STAT:

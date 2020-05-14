@@ -1,8 +1,8 @@
 package artur.sanko.service;
 
-import artur.sanko.data.WeatherPredictionCsvLoader;
-import artur.sanko.data.WeatherPredictionJsonLoader;
-import artur.sanko.data.WeatherPredictionLoader;
+import artur.sanko.data.PredictionCsvLoader;
+import artur.sanko.data.PredictionJsonLoader;
+import artur.sanko.data.PredictionLoader;
 import artur.sanko.enumeration.PredictionPeriod;
 
 import java.time.LocalDate;
@@ -12,14 +12,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static artur.sanko.data.WeatherPredictionCsvLoader.WEATHER_CSV;
-import static artur.sanko.data.WeatherPredictionJsonLoader.WEATHER_JSON;
+import static artur.sanko.data.PredictionCsvLoader.WEATHER_CSV;
+import static artur.sanko.data.PredictionJsonLoader.WEATHER_JSON;
 import static artur.sanko.helper.CollectionsHelper.getRandomElement;
 
 public class WeatherService {
 
-    private WeatherPredictionLoader csvLoader = WeatherPredictionCsvLoader.getInstance();
-    private WeatherPredictionJsonLoader jsonLoader = WeatherPredictionJsonLoader.getInstance();
+    private PredictionLoader csvLoader = PredictionCsvLoader.getInstance();
+    private PredictionLoader jsonLoader = PredictionJsonLoader.getInstance();
     private Map<LocalDate, String> predictionsMap = new HashMap<>();
 
     private static WeatherService weatherService;

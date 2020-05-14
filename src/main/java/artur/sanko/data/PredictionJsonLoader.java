@@ -11,22 +11,22 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class WeatherPredictionJsonLoader implements WeatherPredictionLoader {
+public class PredictionJsonLoader implements PredictionLoader {
 
     public static final String WEATHER_JSON = "weather.json";
 
     private Set<String> predictions = new LinkedHashSet<>();
 
-    private static WeatherPredictionJsonLoader weatherPredictionJsonLoader;
+    private static PredictionJsonLoader weatherPredictionJsonLoader;
 
-    private WeatherPredictionJsonLoader() {
+    private PredictionJsonLoader() {
     }
 
-    public static WeatherPredictionJsonLoader getInstance() {
+    public static PredictionJsonLoader getInstance() {
 
         if (weatherPredictionJsonLoader == null) {
 
-            weatherPredictionJsonLoader = new WeatherPredictionJsonLoader();
+            weatherPredictionJsonLoader = new PredictionJsonLoader();
         }
 
         return weatherPredictionJsonLoader;

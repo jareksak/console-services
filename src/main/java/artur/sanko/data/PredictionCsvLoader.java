@@ -7,26 +7,26 @@ import java.io.InputStreamReader;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class WeatherPredictionCsvLoader implements WeatherPredictionLoader {
+public class PredictionCsvLoader implements PredictionLoader {
 
     private static final String DELIMITER = ";";
     public static final String WEATHER_CSV = "weather.csv";
 
     private Set<String> predictions = new LinkedHashSet<>();
 
-    private static WeatherPredictionCsvLoader weatherPredictionCsvLoader;
+    private static PredictionCsvLoader predictionCsvLoader;
 
-    private WeatherPredictionCsvLoader() {
+    private PredictionCsvLoader() {
     }
 
-    public static WeatherPredictionCsvLoader getInstance() {
+    public static PredictionCsvLoader getInstance() {
 
-        if (weatherPredictionCsvLoader == null) {
+        if (predictionCsvLoader == null) {
 
-            weatherPredictionCsvLoader = new WeatherPredictionCsvLoader();
+            predictionCsvLoader = new PredictionCsvLoader();
         }
 
-        return weatherPredictionCsvLoader;
+        return predictionCsvLoader;
     }
 
     @Override
